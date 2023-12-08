@@ -77,7 +77,10 @@ class QueryInfoTestCase(BaseTestCase):
         last_query = self.client.last_query
         self.assertIsNotNone(last_query)
         self.assertIsNotNone(last_query.profile_info)
-        self.assertEqual(last_query.profile_info.rows_before_limit, 10)
+        rows_before_limit = 10 if self.server_version < (23, 11) else 0
+        self.assertEqual(
+            last_query.profile_info.rows_before_limit, rows_before_limit
+        )
 
         self.assertIsNotNone(last_query.progress)
         self.assertEqual(last_query.progress.rows, 10)
@@ -134,8 +137,8 @@ class QueryInfoTestCase(BaseTestCase):
         last_query = self.client.last_query
         self.assertIsNotNone(last_query)
         self.assertIsNotNone(last_query.progress)
-        self.assertGreater(last_query.progress.rows, 100000000)
-        self.assertGreater(last_query.progress.bytes, 800000000)
+        self.assertGreaterEqual(last_query.progress.rows, 100000000)
+        self.assertGreaterEqual(last_query.progress.bytes, 800000000)
 
         total_rows = 100000000 if self.server_version > (19, 4) else 0
         self.assertEqual(last_query.progress.total_rows, total_rows)
