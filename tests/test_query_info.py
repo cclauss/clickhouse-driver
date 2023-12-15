@@ -34,6 +34,8 @@ class QueryInfoTestCase(BaseTestCase):
         self.assertEqual(last_query.progress.rows, 42)
         self.assertEqual(last_query.progress.bytes, 42)
         self.assertEqual(last_query.progress.total_rows, 0)
+        if self.server_version > (23, 6):
+            self.assertEqual(last_query.progress.total_bytes, 0)
         if self.server_version > (22, 8):
             self.assertGreater(last_query.progress.elapsed_ns, 0)
 
@@ -52,6 +54,8 @@ class QueryInfoTestCase(BaseTestCase):
         self.assertEqual(last_query.progress.rows, 42)
         self.assertEqual(last_query.progress.bytes, 42)
         self.assertEqual(last_query.progress.total_rows, 0)
+        if self.server_version > (23, 6):
+            self.assertEqual(last_query.progress.total_bytes, 0)
         if self.server_version > (22, 8):
             self.assertGreater(last_query.progress.elapsed_ns, 0)
 
@@ -72,6 +76,8 @@ class QueryInfoTestCase(BaseTestCase):
         self.assertEqual(last_query.progress.rows, 42)
         self.assertEqual(last_query.progress.bytes, 42)
         self.assertEqual(last_query.progress.total_rows, 0)
+        if self.server_version > (23, 6):
+            self.assertEqual(last_query.progress.total_bytes, 0)
         if self.server_version > (22, 8):
             self.assertGreater(last_query.progress.elapsed_ns, 0)
 
@@ -91,6 +97,8 @@ class QueryInfoTestCase(BaseTestCase):
 
         total_rows = 10 if self.server_version > (19, 4) else 0
         self.assertEqual(last_query.progress.total_rows, total_rows)
+        if self.server_version > (23, 6):
+            self.assertEqual(last_query.progress.total_bytes, 10)
         if self.server_version > (22, 8):
             self.assertGreater(last_query.progress.elapsed_ns, 0)
 
@@ -149,6 +157,8 @@ class QueryInfoTestCase(BaseTestCase):
 
         total_rows = 100000000 if self.server_version > (19, 4) else 0
         self.assertEqual(last_query.progress.total_rows, total_rows)
+        if self.server_version > (23, 6):
+            self.assertEqual(last_query.progress.total_bytes, 100000000)
 
     def test_progress_info_ddl(self):
         self.client.execute('DROP TABLE IF EXISTS foo')

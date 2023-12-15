@@ -184,6 +184,7 @@ Statistics is sent from ClickHouse server and calculated on client side.
     - processed rows;
     - processed bytes;
     - total rows;
+    - total bytes (*new in version 0.2.7*);
     - written rows (*new in version 0.1.3*);
     - written bytes (*new in version 0.1.3*);
     - elapsed nanoseconds on server side (*new in version 0.2.7*);
@@ -197,6 +198,8 @@ Statistics is sent from ClickHouse server and calculated on client side.
         >>> client.last_query.progress.bytes
         80
         >>> client.last_query.progress.total_rows
+        10
+        >>> client.last_query.progress.total_bytes
         10
         >>> client.last_query.progress.elapsed_ns
         5328901
